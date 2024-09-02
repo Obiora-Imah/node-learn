@@ -3,3 +3,6 @@ planets-project/node_modules
 nasa-project/client/node_modules
 nasa-project/server/node_modules
 express-project/node_modules
+worker-thread/node_modules
+node-performance/node_modules
+nasa-project/node_modules

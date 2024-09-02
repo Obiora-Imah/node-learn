@@ -9,12 +9,16 @@
     "setup": "npm run server-install && npm run client-install",
     "server-start": "npm run watch --prefix server",
     "client-start": "npm start --prefix client",
-    "watch": "npm run server-start & npm run client-start", 
-    "deploy": "npm run client-build && npm run start --prefix server", 
+    "watch": "npm run server-start & npm run client-start",
+    "deploy": "npm run client-build && npm run start --prefix server",
+    "deploy-cluster": "npm run client-build && npm run cluster --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "pm2": "^5.4.2"
+  }
 }
