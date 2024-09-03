@@ -1,55 +1,69 @@
-const launches = new Map();
-let latestFlightNumber = 100;
+const launchesSchema = require('./launches.mongo');
+const planetsSchema = require('./planets.mongo');
 let launch = {
-  mission: 'Kepler Exploration X',
-  rocket: 'Explorer IS1',
   launchDate: new Date('December 27, 2030'),
   target: "Kepler-442 b",
+  mission: 'Kepler Exploration X',
+  rocket: 'Explorer IS1',
   flightNumber: 100,
   customers: ['ZTM', 'NASA'],
   upcoming: false,
   success: true,
 }
-launches.set(launch.flightNumber, launch);
-function addNewLaunch(newLaunch) {
-  console.log(
-    'newLaunch', newLaunch
-  );
+
+const elementExists = async  (key) => {
+  return await launchesSchema.exists({ flightNumber: key});
+}
+const planetExists = async (planetName) => {
+  return await  planetsSchema.exists({ keplerName: planetName});
+}
+saveLaunch(launch);
+async function addNewLaunch(newLaunch) {
+  const currentFlightNumber = (await launchesSchema.findOne().sort("-flightNumber"))?.flightNumber + 1;
   
-  latestFlightNumber++;
   Object.assign(
     newLaunch, {
       customers: ['ZTM', 'NASA'],
       upcoming: true,
       success: false,
-      flightNumber: latestFlightNumber
+      flightNumber: currentFlightNumber
     })
-  launches.set(
-    latestFlightNumber,
-    newLaunch
-  );
+  await saveLaunch(newLaunch);
   return newLaunch;
 }
 
-const getLaunches = () => {
-  return Array.from(launches.values());
+const getLaunches = async () => {
+  return await launchesSchema.find({}, {__v: 0, _id: 0});
 }
-const getSingleLaunches = (key) => {
-  return Array.from(launches.get(key).values());
+const getSingleLaunches = async (key) => {
+  return await launchesSchema.findOne({ flightNumber: key}, {__v: 0, _id: 0});
 }
-const abortLaunch = (key) => {
-  const aborted =  launches.get(key);
-  aborted.upcoming = false;
-  aborted.success = false;
+const abortLaunch = async (key) => {
+  const aborted =  await launchesSchema.findOneAndUpdate({ flightNumber: key}, {
+    upcoming: false,
+    success: false
+  });
   return aborted;
 }
 
-const elementExists = (key) => {
-  return launches.has(key);
+async function saveLaunch(launchData) {
+  try {
+    if (!(await planetExists(launchData.target))) {
+      throw new Error('Planet does not exist');
+    }
+    await launchesSchema.findOneAndUpdate({
+      flightNumber: launchData.flightNumber
+    }, {
+      ...launchData
+    }, {
+      upsert: true
+    });
+  } catch (err) {
+    console.error(`Could not save planet ${err}`);
+  }
 }
 
 module.exports = {
-  launches,
   getLaunches,
   addNewLaunch,
   getSingleLaunches,
