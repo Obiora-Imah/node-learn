@@ -1,5 +1,5 @@
-const { getLaunches, addNewLaunch, abortLaunch, elementExists } = require("../../models/launches.model");
-
+const { getLaunches, addNewLaunch, abortLaunch, elementExists, loadLaunchesData } = require("../../models/launches.model");
+// spacex apix https://api.spacexdata.com/v4/launches
 async function httpAbortLaunch(req, res) {
   const launchId = +req.params.id;
   if(!elementExists(launchId)) {
@@ -10,7 +10,9 @@ async function httpAbortLaunch(req, res) {
   return res.status(200).json(await abortLaunch(launchId));
 }
 async function getAllLaunches(req, res) {
-  return res.status(200).json(await getLaunches());
+  console.log("params", req.params);
+  
+  return res.status(200).json(await getLaunches(req.query.limit, req.query.page));
 }
 async function httpAddNewLaunch(req, res) {
   if (!req.body.mission || !req.body.rocket || !req.body.target || !req.body.launchDate) {

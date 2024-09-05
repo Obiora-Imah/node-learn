@@ -10,14 +10,14 @@ describe("group test", () => {
   afterAll(async () => {
     await dbDisconnect();
   });
-  describe("GET /launches", () => {
+  describe("GET /v1/launches", () => {
     test("It should respond with an array of launches", async () => {
-      const response = await request(app).get("/launches");
+      const response = await request(app).get("/v1/launches");
       expect(response.statusCode).toEqual(200);
     });
   });
 
-  describe("POST /launches", () => {
+  describe("POST /v1/launches", () => {
     test("It should respond with a 201 status code", async () => {
       const newLaunch = {
         mission: "Kepler",
@@ -26,7 +26,7 @@ describe("group test", () => {
       };
       const requestDate =  "2030-11-25";
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send({...newLaunch, launchDate: requestDate,})
         .set("Content-Type", "application/json")
         .expect(201)
@@ -42,7 +42,7 @@ describe("group test", () => {
         launchDate: "2030-11-25T00:00:00.000Z",
       };
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(newLaunch)
         .set("Content-Type", "application/json");
       expect(response.body).toMatchObject(newLaunch);
@@ -53,7 +53,7 @@ describe("group test", () => {
         launchDate: "2030-11-25",
       };
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(newLaunch)
         .set("Content-Type", "application/json");
       expect(response.statusCode).toBe(400);
@@ -67,7 +67,7 @@ describe("group test", () => {
         launchDate: "invalid date",
       };
       const response = await request(app)
-        .post("/launches")
+        .post("/v1/launches")
         .send(newLaunch)
         .set("Content-Type", "application/json");
       expect(response.statusCode).toBe(400);

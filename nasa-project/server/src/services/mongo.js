@@ -1,6 +1,8 @@
 
 const mongoose = require('mongoose');
-const MONGO_URL = 'mongodb+srv://obioraimah:MxG9fOn87gYDI9O6@node-learn-mongo.erni7.mongodb.net/nasa?retryWrites=true&w=majority&appName=node-learn-mongo'
+require('dotenv').config();
+const MONGO_URL = process.env.MONGO_URL;
+console.log("MONGO_URL", process.env.MONGO_URL);
 
 // await mongoose.connect(MONGO_URL);
 mongoose.connection.once('open', () => {
