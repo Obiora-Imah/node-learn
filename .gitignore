@@ -7,3 +7,4 @@ worker-thread/node_modules
 node-performance/node_modules
 nasa-project/node_modules
 nasa-project/server/.env
+security-example/.env
