@@ -11,3 +11,4 @@ security-example/.env
 security-example/node_modules
 nasa-project/node-lear-key-pair.pem
 graphql-example/node_modules
+appolo-graphql/node_modules
