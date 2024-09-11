@@ -1,0 +1,18 @@
+
+type Order {
+  id: ID!
+  items: [OrderItem]
+  status: String!
+  date: String!
+  subtotal: Float!
+  grandTotal: Float!
+}
+type OrderItem {
+  id: ID!
+  product: Product!
+  quantity: Int
+}
+
+  type Query {
+    orders: [Order]
+  }
