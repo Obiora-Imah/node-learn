@@ -1,4 +1,4 @@
-const API_HOST = process.env.API_HOST || 'http://localhost:8000/v1';
+const API_HOST = process.env.API_HOST || 'v1';
 async function httpGetPlanets() {
   const planets = await fetch(`${API_HOST}/planets`)
   const body = await planets.json()

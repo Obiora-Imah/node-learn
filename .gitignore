@@ -9,3 +9,4 @@ nasa-project/node_modules
 nasa-project/server/.env
 security-example/.env
 security-example/node_modules
+nasa-project/node-lear-key-pair.pem
